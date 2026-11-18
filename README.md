@@ -2,7 +2,7 @@
 
 [English](README.en.md) | 简体中文
 
-本项目是来自 [DeepSeek chat-dome](https://github.com/deepseek-ai/chat-demo) 仓库的分支，使用 Electron 和 Cordova 对Windows和安卓系统进行 桌面应用 web 套壳。
+本项目是来自 [DeepSeek chat-demo](https://github.com/deepseek-ai/chat-demo) 仓库的分支，使用 Electron 和 Cordova 对Windows和安卓系统进行 桌面应用 web 套壳。
 
 点击 [在线体验](https://deepseek-ai.github.io/chat- demo/) 即可使用，也可以前往 [Releases](https://github.com/deepseek-ai/deepseek-chat- demo/releases) 下载压缩包，解压后双击 `index.html` 在本地使用，无需安装或构建。首次使用时，请在设置中填写 API Key。
 
