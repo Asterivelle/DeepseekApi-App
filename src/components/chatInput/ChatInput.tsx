@@ -9,6 +9,7 @@ import {
 } from '../base/icons.js'
 import { setSearch, setThinking, useSettings } from '../../services/settings.js'
 import { useIsMobile } from '../../app/viewport.js'
+import { motion } from '../../motion/index.js'
 import { sendMessage, stopReply, useChatStore } from '../../services/chat/store.js'
 import {
   addDraftFiles,
@@ -154,7 +155,12 @@ const Input = ({ sessionId }: { sessionId: string | null }) => {
 
   return (
     <div
-      className={clsx(styles.wrapper, sessionId === null ? styles.home : styles.session)}
+      className={clsx(
+        styles.wrapper,
+        sessionId === null ? styles.home : styles.session,
+        motion.surfaceInteractive,
+        sessionId === null && motion.welcomeComposer
+      )}
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           textareaRef.current?.focus({ preventScroll: true })

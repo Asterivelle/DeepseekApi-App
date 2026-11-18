@@ -5,28 +5,37 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "main": "electron/main.js",
   "scripts": {
-    "dev": "rspack serve -c rspack.config.ts",
-    "build": "rm -rf dist && NODE_ENV=production rspack build -c rspack.config.ts",
+    "start": "electron .",
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "rspack serve -c rspack.config.ts",
+    "build": "node scripts/build.mjs",
+    "android:sync": "node scripts/sync-cordova.mjs",
+    "android:add": "pnpm build && pnpm android:sync && pnpm --dir cordova run platform:add",
+    "android:build": "pnpm build && pnpm --dir cordova run build",
+    "android:run": "pnpm build && pnpm --dir cordova run android",
+    "package": "node scripts/build.mjs && electron-builder --dir",
+    "dist": "node scripts/build.mjs && electron-builder",
     "type": "tsc -p tsconfig.json",
     "lint": "oxlint src rspack.config.ts",
     "format": "oxfmt --write ."
   },
   "dependencies": {
-    "@types/katex": "^0.16.5",
-    "@types/mdast": "~4.0.3",
-    "@types/prismjs": "^1.26.1",
-    "@types/react": "~18.3.1",
+    "@types/katex": "^0.16.8",
+    "@types/mdast": "~4.0.4",
+    "@types/prismjs": "^1.26.6",
+    "@types/react": "~18.3.31",
     "@types/react-dom": "~18.3.0",
     "clsx": "2.1.1",
     "fflate": "0.8.3",
     "idb": "8.0.3",
-    "katex": "0.16.22",
+    "katex": "0.16.47",
     "mdast-util-find-and-replace": "3.0.2",
     "mdast-util-from-markdown": "2.0.3",
     "mdast-util-gfm": "3.1.0",
     "mdast-util-math": "3.0.0",
-    "mermaid": "11.10.1",
+    "mermaid": "11.17.2",
     "micromark-extension-gfm": "3.0.0",
     "micromark-extension-llm-math": "3.1.0",
     "prismjs": "1.30.0",
@@ -40,8 +49,38 @@
     "@rspack/dev-server": "2.0.1",
     "@swc/helpers": "0.5.23",
     "@types/node": "~20.9.2",
+    "electron": "^45.3.3",
+    "electron-builder": "^26.18.0",
     "oxfmt": "0.48.0",
     "oxlint": "1.63.0",
     "typescript": "7.0.2"
+  },
+  "build": {
+    "appId": "com.deepseek.chat-demo",
+    "productName": "DeepSeek Chat Demo",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "LICENSE",
+      "!node_modules/**/*"
+    ],
+    "asar": true,
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.productivity",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Allow voice input in the chat."
+      }
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility"
+    }
   }
 }

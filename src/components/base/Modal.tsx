@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslate } from '../../i18n/index.js'
+import { motion } from '../../motion/index.js'
 import { IconCloseOutline16 } from './icons.js'
 import { IconButton } from './IconButton.js'
 import styles from './Modal.module.css'
@@ -50,11 +51,11 @@ export const Modal = ({
 
   return createPortal(
     <div
-      className={styles.overlay}
+      className={clsx(styles.overlay, motion.overlayEnter)}
       onMouseDown={(event) => event.target === event.currentTarget && onClose()}
     >
       <div
-        className={clsx(styles.content, className)}
+        className={clsx(styles.content, motion.dialogEnter, className)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

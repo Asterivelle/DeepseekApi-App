@@ -1,0 +1,25 @@
+{
+  "name": "chat-demo-cordova",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Android shell for chat-demo",
+  "scripts": {
+    "platform:add": "cordova platform add android@15.1.0",
+    "sync": "node ../scripts/sync-cordova.mjs",
+    "build": "node ../scripts/sync-cordova.mjs && node ../scripts/build-android.mjs",
+    "android": "node ../scripts/sync-cordova.mjs && node ../scripts/build-android.mjs && cordova run android --nobuild"
+  },
+  "devDependencies": {
+    "cordova": "13.0.0",
+    "cordova-android": "^15.1.0",
+    "cordova-plugin-inappbrowser": "6.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-inappbrowser": {}
+    }
+  }
+}

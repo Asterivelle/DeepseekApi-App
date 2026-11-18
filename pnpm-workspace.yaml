@@ -1,0 +1,18 @@
+packages:
+  - cordova
+allowBuilds:
+  electron-winstaller: false
+minimumReleaseAgeExclude:
+  - lodash-es@4.17.24
+  - mermaid@11.14.1
+  - mermaid@11.16.1
+  - katex@0.18.2
+  - tinypool@2.1.1
+  - tinypool@2.1.2
+  - lodash-es@4.17.23
+overrides:
+  cordova-plugin-inappbrowser@<6.0.1: ^6.0.1
+  glob@>=9.0.0 <=14.0.1: ^14.0.2
+  katex@>=0.11.0 <0.18.2: ^0.18.2
+  minimatch@>=7.0.0 <11.0.1: ^11.0.1
+  tinypool@<2.1.2: ^2.1.2

@@ -42,7 +42,7 @@ export const usePreventPageScroll = (enabled: boolean) => {
   }, [enabled])
 }
 
-/** 移动端页面跟随视觉视口，键盘弹出后顶栏和输入框仍留在可见区域。 */
+/** 移动端页面跟随视觉视口，兼容旋转、软键盘和不支持 dvh 的 WebView。 */
 export const useMobileViewport = (enabled: boolean) => {
   const frameRef = useRef<HTMLDivElement>(null)
 
@@ -52,7 +52,6 @@ export const useMobileViewport = (enabled: boolean) => {
       return
     }
     const viewport = window.visualViewport
-    const inputSelector = 'textarea, input:not([type="file"])'
     let animationFrame = 0
     const reset = () => {
       frame.style.removeProperty('--app-viewport-height')
@@ -61,11 +60,6 @@ export const useMobileViewport = (enabled: boolean) => {
     const update = () => {
       // 双指缩放由浏览器处理，保持当前布局尺寸。
       if (viewport && viewport.scale !== 1) {
-        return
-      }
-      // 失焦后直接恢复 CSS 的全高布局，不等 Safari 收键盘后的 resize。
-      if (!document.activeElement?.matches(inputSelector)) {
-        reset()
         return
       }
       frame.style.setProperty(
@@ -83,26 +77,18 @@ export const useMobileViewport = (enabled: boolean) => {
       update()
       scheduleFrame()
     }
-    const onFocusIn = () => {
-      if (document.activeElement?.matches(inputSelector)) {
-        schedule()
-      }
-    }
 
     update()
     viewport?.addEventListener('resize', schedule)
     viewport?.addEventListener('scroll', schedule)
     window.addEventListener('resize', schedule)
-    document.addEventListener('focusin', onFocusIn)
-    // 等点击和焦点切换完成，避免按钮移动、或切换输入框时短暂恢复全高。
-    document.addEventListener('focusout', scheduleFrame)
+    window.addEventListener('orientationchange', schedule)
     return () => {
       cancelAnimationFrame(animationFrame)
       viewport?.removeEventListener('resize', schedule)
       viewport?.removeEventListener('scroll', schedule)
       window.removeEventListener('resize', schedule)
-      document.removeEventListener('focusin', onFocusIn)
-      document.removeEventListener('focusout', scheduleFrame)
+      window.removeEventListener('orientationchange', schedule)
       reset()
     }
   }, [enabled])

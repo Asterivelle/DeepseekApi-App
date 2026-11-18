@@ -1,6 +1,11 @@
 node_modules/
 dist/
 build/
+release/
+cordova/node_modules/
+cordova/platforms/
+cordova/plugins/
+cordova/www/
 .pnpm-store/
 .cache/
 *.log

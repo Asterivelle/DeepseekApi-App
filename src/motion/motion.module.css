@@ -1,0 +1,124 @@
+.welcomeTitle {
+  animation: riseIn 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.welcomeComposer {
+  animation: riseIn 760ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both;
+}
+
+.routeEnter {
+  animation: riseIn 440ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.overlayEnter {
+  animation: fadeIn 240ms ease-out both;
+}
+
+.dialogEnter {
+  animation: dialogIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.drawerMaskEnter {
+  animation: fadeIn 260ms ease-out both;
+}
+
+.drawerEnter {
+  animation: drawerIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.pressable {
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 200ms ease;
+}
+
+.surfaceInteractive {
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 200ms ease;
+}
+
+@media (hover: hover) {
+  .pressable:hover {
+    transform: translateY(-1px);
+  }
+
+  .surfaceInteractive:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes drawerIn {
+  from {
+    opacity: 0.72;
+    transform: translateX(-24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcomeTitle,
+  .welcomeComposer,
+  .routeEnter,
+  .overlayEnter,
+  .dialogEnter,
+  .drawerMaskEnter,
+  .drawerEnter {
+    animation: none;
+  }
+
+  .pressable,
+  .surfaceInteractive {
+    transition: none;
+  }
+
+  .pressable:hover,
+  .pressable:active,
+  .surfaceInteractive:hover {
+    transform: none;
+  }
+}

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslate } from '../../i18n/index.js'
 import { IconPanelLeftOutline16, IconSettingsOutline16, NewChatIcon } from '../base/icons.js'
 import { setSiderCollapsed } from '../../services/settings.js'
+import { motion } from '../../motion/index.js'
 import { groupSessions } from '../../services/chat/sessionGroups.js'
 import { newChat, removeSession, useChatStore } from '../../services/chat/store.js'
 import type { SessionSummary } from '../../services/chat/types.js'
@@ -63,7 +64,7 @@ export const Sider = ({ mobile = false }: { mobile?: boolean }) => {
       </div>
       <button
         type="button"
-        className={styles.newChat}
+        className={clsx(styles.newChat, motion.pressable)}
         onClick={() => {
           newChat()
           closeMobileSider()
@@ -92,7 +93,11 @@ export const Sider = ({ mobile = false }: { mobile?: boolean }) => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <button type="button" className={styles.settings} onClick={() => openSettings('general')}>
+        <button
+          type="button"
+          className={clsx(styles.settings, motion.pressable)}
+          onClick={() => openSettings('general')}
+        >
           <span className={styles.settingsIcon}>
             <IconSettingsOutline16 />
           </span>
@@ -148,8 +153,8 @@ export const MobileSider = () => {
   }
   return (
     <>
-      <div className={styles.drawerMask} onClick={closeMobileSider} />
-      <div className={styles.drawer}>
+      <div className={clsx(styles.drawerMask, motion.drawerMaskEnter)} onClick={closeMobileSider} />
+      <div className={clsx(styles.drawer, motion.drawerEnter)}>
         <Sider mobile />
       </div>
     </>

@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { useIsMobile } from '../../app/viewport.js'
 import { useTranslate } from '../../i18n/index.js'
+import { motion } from '../../motion/index.js'
 import type { Session } from '../../services/chat/types.js'
 import { ChatInput } from '../chatInput/ChatInput.js'
 import { MessageList } from '../messages/MessageList.js'
@@ -21,7 +22,7 @@ export const SessionView = ({
   const isMobile = useIsMobile()
   const title = session.title || t('untitledChat')
   return (
-    <div className={styles.view}>
+    <div className={clsx(styles.view, motion.routeEnter)}>
       {isMobile ? (
         <MobileHeader title={title} />
       ) : (
