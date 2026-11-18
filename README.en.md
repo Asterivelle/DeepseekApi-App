@@ -4,7 +4,7 @@ English | [简体中文](README.md)
 
 This project is a fork of the [DeepSeek chat-demo](https://github.com/deepseek-ai/chat-demo) repository. It uses Electron and Cordova to wrap the web app for Windows and Android.
 
-Click [Try it online](https://deepseek-ai.github.io/chat-demo/) to use it, or go to [Releases](https://github.com/deepseek-ai/deepseek-chat-demo/releases) to download the archive, extract it, and double-click `index.html` to use it locally without installation or a build. On first use, enter your API key in Settings.
+Click [Try DeepSeek official version online](https://deepseek-ai.github.io/chat-demo/) to use it, or go to [DeepSeek official version Releases](https://github.com/deepseek-ai/deepseek-chat-demo/releases) to download the archive, extract it, and double-click `index.html` to use it locally without installation or a build. On first use, enter your API key in Settings.
 
 ## Running
 
