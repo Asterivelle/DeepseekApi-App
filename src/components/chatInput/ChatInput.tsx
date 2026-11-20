@@ -7,7 +7,14 @@ import {
   IconStopFill16,
   IconThinkOutline14,
 } from '../base/icons.js'
-import { setSearch, setThinking, useSettings } from '../../services/settings.js'
+import { verifyApiKey } from '../../services/api/client.js'
+import {
+  setAvailableModels,
+  setModel,
+  setSearch,
+  setThinking,
+  useSettings,
+} from '../../services/settings.js'
 import { useIsMobile } from '../../app/viewport.js'
 import { motion } from '../../motion/index.js'
 import { sendMessage, stopReply, useChatStore } from '../../services/chat/store.js'
@@ -34,6 +41,7 @@ import { VoiceButton } from './VoiceButton.js'
 import { Spectrum } from './Spectrum.js'
 import { useTranslate } from '../../i18n/index.js'
 import styles from './ChatInput.module.css'
+import { Select } from '../base/Select.js'
 
 /** 输入框：自适应高度的文本框 + 文件 + 深度思考与智能搜索开关 + 语音输入 + 发送 / 停止 */
 export const ChatInput = memo(function ChatInput({ sessionId }: { sessionId: string | null }) {
@@ -51,12 +59,37 @@ const Input = ({ sessionId }: { sessionId: string | null }) => {
     (state) => sessionId !== null && Object.hasOwn(state.streaming, sessionId)
   )
   const thinking = useSettings((state) => state.thinking)
+  const model = useSettings((state) => state.model)
+  const availableModels = useSettings((state) => state.availableModels)
+  const apiKey = useSettings((state) => state.apiKey)
+  const modelsLoaded = useSettings((state) => state.modelsLoaded)
   const importingHistory = useChatStore((state) => state.importingHistory)
   const isMobile = useIsMobile()
   const search = useSettings((state) => state.search)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const togglesRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!apiKey || modelsLoaded) {
+      return
+    }
+    let active = true
+    void verifyApiKey(apiKey)
+      .then(setAvailableModels)
+      .catch((error: unknown) => {
+        if (active) {
+          showToast({
+            key: 'modelListLoadFailed',
+            params: { message: error instanceof Error ? error.message : String(error) },
+            type: 'error',
+          })
+        }
+      })
+    return () => {
+      active = false
+    }
+  }, [apiKey, modelsLoaded])
 
   useLayoutEffect(() => {
     const toggles = togglesRef.current
@@ -208,6 +241,14 @@ const Input = ({ sessionId }: { sessionId: string | null }) => {
       <div className={styles.functionRow}>
         {/* 深度思考 / 智能搜索开关，tooltip 在按钮上方 */}
         <div ref={togglesRef} className={styles.toggles}>
+          <Tooltip content={t('deactivatedModelsTooltip')}>
+            <Select
+              ariaLabel={t('settingsModelPreference')}
+              value={model}
+              options={availableModels.map((value) => ({ value, label: value }))}
+              onChange={setModel}
+            />
+          </Tooltip>
           <Tooltip content={t('deactivatedThinkTooltip')}>
             <button
               type="button"

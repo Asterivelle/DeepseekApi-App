@@ -169,4 +169,11 @@ export const zh = {
   latestReminderLanguage: '中文',
   settingsLocaleZhCN: '简体中文',
   settingsLocaleEnUS: 'English',
+  settingsSafetyPreference: '内容安全审查',
+  settingsSafetyHigh: '严格',
+  settingsSafetyLow: '宽容',
+  settingsModelPreference: '模型',
+  settingDialogAsideModelOptionLabel: '模型设置',
+  deactivatedModelsTooltip: '切换当前对话使用的模型',
+  modelListLoadFailed: '获取模型列表失败：{message}',
 } as const

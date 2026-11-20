@@ -7,6 +7,7 @@ import {
   IconFollowsystemOutline16,
   IconLightOutline16,
   IconSettingsOutline16,
+  IconThinkOutline16,
   IconUploadOutline14,
 } from '../base/icons.js'
 import {
@@ -22,6 +23,8 @@ import {
   isChineseBrowser,
   setLocale,
   setLocation,
+  setModel,
+  setSafety,
   setThemePreference,
   setTtsVoice,
   useSettings,
@@ -37,7 +40,7 @@ import { closeSettings, useSettingsDialog, type SettingsSection } from './settin
 import styles from './Settings.module.css'
 
 /**
- * 设置弹窗：分「通用设置」（主题、语言、朗读音色、位置）与「数据管理」（API Key、导入、导出、删除）。
+ * 设置弹窗包含通用设置、模型设置和数据管理
  * 桌面端为居中弹窗、左侧导航；移动端为底部弹层、导航横排在内容上方
  */
 export const SettingsDialog = () => {
@@ -51,6 +54,7 @@ const sections: { value: SettingsSection; label: TranslationKey; icon: ReactNode
     label: 'settingDialogAsideGeneralOptionLabel',
     icon: <IconSettingsOutline16 />,
   },
+  { value: 'model', label: 'settingDialogAsideModelOptionLabel', icon: <IconThinkOutline16 /> },
   { value: 'data', label: 'settingDialogAsideDataOptionLabel', icon: <IconDataOutline16 /> },
 ]
 
@@ -100,6 +104,11 @@ const SettingsContent = () => {
               <LocaleSetting />
               <TtsVoiceSetting />
               <LocationSetting />
+            </>
+          ) : section === 'model' ? (
+            <>
+              <ModelSetting />
+              <SafetySetting />
             </>
           ) : (
             <>
@@ -308,6 +317,48 @@ const TtsVoiceSetting = () => {
             { value: 'tide', label: t('settingsTtsVoiceTide') },
           ]}
           onChange={setTtsVoice}
+        />
+      }
+    />
+  )
+}
+
+const ModelSetting = () => {
+  const t = useTranslate()
+  const model = useSettings((state) => state.model)
+  const availableModels = useSettings((state) => state.availableModels)
+  return (
+    <SettingCell
+      label={t('settingsModelPreference')}
+      status={null}
+      action={
+        <Select
+          ariaLabel={t('settingsModelPreference')}
+          value={model}
+          options={availableModels.map((value) => ({ value, label: value }))}
+          onChange={setModel}
+        />
+      }
+    />
+  )
+}
+
+const SafetySetting = () => {
+  const t = useTranslate()
+  const safety = useSettings((state) => state.safety)
+  return (
+    <SettingCell
+      label={t('settingsSafetyPreference')}
+      status={null}
+      action={
+        <Select
+          ariaLabel={t('settingsSafetyPreference')}
+          value={safety}
+          options={[
+            { value: 'high', label: t('settingsSafetyHigh') },
+            { value: 'low', label: t('settingsSafetyLow') },
+          ]}
+          onChange={setSafety}
         />
       }
     />

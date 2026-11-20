@@ -19,10 +19,11 @@ git clone https://github.com/Asterivelle/DeepseekApi-App.git
 cd DeepseekApi-App
 
 pnpm install
+## 启动渲染进程开发服务器并打开 Electron 窗口
 pnpm dev
+## 只想在浏览器中开发，运行后打开 http://localhost:8090
+pnpm dev:web
 ```
-
-`pnpm dev` 会启动渲染进程开发服务器并打开 Electron 窗口。若只想在浏览器中开发，运行 `pnpm dev:web` 后打开 http://localhost:8090 。
 
 生成静态产物：
 

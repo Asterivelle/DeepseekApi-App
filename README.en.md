@@ -19,10 +19,11 @@ git clone https://github.com/Asterivelle/DeepseekApi-App.git
 cd DeepseekApi-App
 
 pnpm install
+## starts the renderer development server and opens the Electron window.
 pnpm dev
+## develop in the browser, run and open http://localhost:8090.
+pnpm dev:web
 ```
-
-`pnpm dev` starts the renderer development server and opens the Electron window. If you only want to develop in the browser, run `pnpm dev:web` and open http://localhost:8090.
 
 Build the static output:
 

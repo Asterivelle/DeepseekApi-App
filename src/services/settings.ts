@@ -4,6 +4,9 @@ import { normalizeLocation, type UserLocation } from './location.js'
 
 export type Locale = 'zh-CN' | 'en-US'
 
+export type Safety = 'low' | 'high'
+export type ChatModel = string
+
 /** 主题偏好；默认跟随系统 */
 export type ThemePreference = 'light' | 'dark' | 'system'
 
@@ -11,6 +14,10 @@ export type ThemePreference = 'light' | 'dark' | 'system'
 type Settings = {
   apiKey: string | null
   locale: Locale
+  safety: Safety
+  model: ChatModel
+  availableModels: ChatModel[]
+  modelsLoaded: boolean
   themePreference: ThemePreference
   location: UserLocation | null
   ttsVoice: TtsVoice
@@ -22,6 +29,8 @@ type Settings = {
 const KEYS = {
   apiKey: 'chat-demo:api-key',
   locale: 'chat-demo:locale',
+  safety: 'chat-demo:safety',
+  model: 'chat-demo:model',
   location: 'chat-demo:location',
   themePreference: 'chat-demo:theme-preference',
   ttsVoice: 'chat-demo:tts-voice',
@@ -86,10 +95,15 @@ const initialThemePreference = (): ThemePreference => {
 
 /** 未保存过时使用服务端默认音色 stella（海星） */
 const initialTtsVoice = (): TtsVoice => (read(KEYS.ttsVoice) === 'tide' ? 'tide' : 'stella')
+const initialModel = (): ChatModel => read(KEYS.model) || 'deepseek-flash'
 
 export const useSettings = create<Settings>(() => ({
   apiKey: read(KEYS.apiKey),
   locale: initialLocale(),
+  safety: read(KEYS.safety) === 'high' ? 'high' : 'low',
+  model: initialModel(),
+  availableModels: ['deepseek-flash', 'deepseek-v4-pro'],
+  modelsLoaded: false,
   location: initialLocation(),
   themePreference: initialThemePreference(),
   ttsVoice: initialTtsVoice(),
@@ -97,6 +111,23 @@ export const useSettings = create<Settings>(() => ({
   search: read(KEYS.search) === 'true',
   siderCollapsed: read(KEYS.siderCollapsed) === 'true',
 }))
+
+export const setSafety = (safety: Safety) => {
+  write(KEYS.safety, safety)
+  useSettings.setState({ safety })
+}
+
+export const setModel = (model: ChatModel) => {
+  write(KEYS.model, model)
+  useSettings.setState({ model })
+}
+
+export const setAvailableModels = (availableModels: ChatModel[]) => {
+  const currentModel = useSettings.getState().model
+  const model = availableModels.includes(currentModel) ? currentModel : availableModels[0]
+  write(KEYS.model, model)
+  useSettings.setState({ availableModels, modelsLoaded: true, model })
+}
 
 export const setLocale = (locale: Locale) => {
   write(KEYS.locale, locale)

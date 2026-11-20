@@ -90,12 +90,38 @@ const anthropicHeaders = (apiKey: string, beta: boolean): Record<string, string>
 })
 
 /** 用 GET /models 校验 API Key（不产生费用） */
-export const verifyApiKey = async (apiKey: string, signal?: AbortSignal): Promise<void> => {
-  await request(`${API_ORIGIN}/models`, {
+export const verifyApiKey = async (apiKey: string, signal?: AbortSignal): Promise<string[]> => {
+  const response = await request(`${API_ORIGIN}/models`, {
     method: 'GET',
     headers: { Authorization: `Bearer ${apiKey}` },
     signal,
   })
+  const body: unknown = await response.json()
+  if (
+    typeof body !== 'object' ||
+    body === null ||
+    !('data' in body) ||
+    !Array.isArray(body.data)
+  ) {
+    throw new ApiError('protocol', 'Invalid model list response', response.status)
+  }
+  const models = [
+    ...new Set(
+      body.data.flatMap((item: unknown) =>
+        typeof item === 'object' &&
+        item !== null &&
+        'id' in item &&
+        typeof item.id === 'string' &&
+        item.id.trim()
+          ? [item.id]
+          : []
+      )
+    ),
+  ]
+  if (models.length === 0) {
+    throw new ApiError('protocol', 'The model list is empty', response.status)
+  }
+  return models
 }
 
 /**

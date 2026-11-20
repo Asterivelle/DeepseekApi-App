@@ -178,4 +178,11 @@ export const en = {
   latestReminderLanguage: 'English',
   settingsLocaleZhCN: 'Simplified Chinese',
   settingsLocaleEnUS: 'English',
+  settingsSafetyPreference: 'Content safety review',
+  settingsSafetyHigh: 'Strict',
+  settingsSafetyLow: 'Lenient',
+  settingsModelPreference: 'Model',
+  settingDialogAsideModelOptionLabel: 'Model',
+  deactivatedModelsTooltip: 'Switch the model used for this chat',
+  modelListLoadFailed: 'Failed to load model list: {message}',
 } satisfies Record<keyof typeof zh, string>
